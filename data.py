@@ -71,8 +71,5 @@ def generateValidListWithDuplicates(numDistinctDates, numDuplicates):
     return dateList
 
 
-validList10 = generateValidDateStringList(10)
-validList100 = generateValidDateStringList(100)
-validList1000 = generateValidDateStringList(1000)
-validList5000 = generateValidDateStringList(5000)
+
 

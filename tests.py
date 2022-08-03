@@ -1,12 +1,12 @@
 from data import *
 
-# check if each list element in a list of dates is of type string
+# check if list of dates are valid and contain no duplicates
 def checkAllDates(dateArray):
     invalidDates = []
     isValid = True
-    for date in dateArray:
+    for i, date in enumerate(dateArray):
         if not isValidDateString(date):
-            invalidDates.append(date)
+            invalidDates.append((date, i))
     if len(invalidDates) != 0:
         isValid = False
         print('Date array contains invalid dates as follows: ')
@@ -14,11 +14,11 @@ def checkAllDates(dateArray):
     else:
         print('Dates are all valid')
     
-    if hasNoDuplicates(dateArray) != True:
+    output = hasNoDuplicates(dateArray)
+    if output != True:
         isValid = False
         print('Date array has duplicates as follows: ')
-        print(hasNoDuplicates(dateArray))
-        return False
+        print(output)
     
     return isValid
 
@@ -47,15 +47,17 @@ def isValidDateString(dateString):
     else:
         [date, time] = dateString.split("T")
 
+    out = True
     if not isDateValid(date):
         print('Date portion is not valid')
-        return False
+        out = False
     
     if not isTimeValid(time):
         print('Time portion is not valid')
-        return False
-
-    return True
+        out = False
+    if not out:
+        print('----------------------')
+    return out
 
 # check if date portion of date string is valid
 def isDateValid(date):
@@ -68,19 +70,18 @@ def isDateValid(date):
     
     [year, month, day] = date.split('-')
     
+    out = True
     if not isYearValid(year):
         print('Year portion is not valid')
-        return False
+        out = False
     
     if not isMonthValid(month):
         print('Month portion is not valid')
-        return False
-    
+        out = False    
     if not isDayValid(day):
         print("Day portion is not valid")
-        return False
-    
-    return True
+        out = False    
+    return out 
 
 # check if 'YYYY' portion is valid
 def isYearValid(year):
@@ -114,6 +115,7 @@ def isMonthValid(month):
         print('Month ({}) is not in range [01, 12]'.format(monthInt))
         return False
 
+# check if 'DD' portion is valid
 def isDayValid(day):
     if len(day) != 2:
         print('Invalid day length of {}, should be 2'.format(len(day)))
@@ -128,7 +130,7 @@ def isDayValid(day):
     if dayInt <= 31 and dayInt >= 1:
         return True
     else:
-        print('Day ({}) is not in range [01, 12]'.format(dayInt))
+        print('Day ({}) is not in range [01, 31]'.format(dayInt))
         return False
 
 
@@ -158,17 +160,18 @@ def isClockTimeValid(clockTime):
         return False
     [hours, minutes, seconds] = clockTime.split(':')
     
+    out = True
     if not isHoursValid(hours):
         print('Hours not valid')
-        return False
-    if not isMinutesOrSecondsValid(minutes):
+        out = False
+    if not isMinutesOrSecondsValid(minutes, 'Minutes'):
         print('Minutes not valid')
-        return False
-    if not isMinutesOrSecondsValid(seconds):
+        out = False
+    if not isMinutesOrSecondsValid(seconds, 'Seconds'):
         print('Seconds not valid')
-        return False
+        out = False
 
-    return True
+    return out
 
 # check if 'hh' is valid
 def isHoursValid(hours):
@@ -189,19 +192,19 @@ def isHoursValid(hours):
     return True
 
 #check if 'mm' or 'ss' is valid as they share the same format
-def isMinutesOrSecondsValid(minutes):
+def isMinutesOrSecondsValid(minutes, type):
     if len(minutes) != 2:
-       print('Minutes/seconds of length {}, should have length 2'.format(len(minutes)))
+       print('{} of length {}, should have length 2'.format(type, len(minutes)))
        return False
 
     try:
         minutesInt = int(minutes)
     except:
-        print("Minutes/seconds contains nonnumerical characters")
+        print('{} contains nonnumerical characters'.format(type))
         return False 
     
     if not (minutesInt <=59 and minutesInt >= 0):
-        print('Minutes/seconds value is {}, should be in range [00-23]'.format(minutesInt))
+        print('{} value is {}, should be in range [00-59]'.format(type, minutesInt))
         return False
     
     return True 
@@ -224,6 +227,7 @@ def isTimeZoneValid(timeZone):
 
     if not (firstChar == '+' or firstChar == '-'):
         print('First character of time zone is {}, should be \'+\' or \'-\''.format(firstChar))
+        return False
 
     time = timeZone[1:]
     if time.count(':') != 1:
@@ -231,13 +235,13 @@ def isTimeZoneValid(timeZone):
     
     [hours, minutes] = time.split(':')
 
+    out = True
     if not isHoursValid(hours):
         print('Time zone hours not valid')
-        return False
-    if not isMinutesOrSecondsValid(minutes):
+        out = False
+    if not isMinutesOrSecondsValid(minutes, 'Minutes'):
         print('Time zone minutes not valid')
-        return False
-
-    return True
+        out = False
+    return out
 
 
