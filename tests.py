@@ -1,16 +1,26 @@
 from data import *
+
 # check if each list element in a list of dates is of type string
 def checkAllDates(dateArray):
+    invalidDates = []
+    isValid = True
+    for date in dateArray:
+        if not isValidDateString(date):
+            invalidDates.append(date)
+    if len(invalidDates) != 0:
+        isValid = False
+        print('Date array contains invalid dates as follows: ')
+        print(invalidDates)
+    else:
+        print('Dates are all valid')
+    
     if hasNoDuplicates(dateArray) != True:
+        isValid = False
         print('Date array has duplicates as follows: ')
         print(hasNoDuplicates(dateArray))
         return False
-
-    for date in dateArray:
-        if not isValidDateString(date):
-            return False
     
-    return True
+    return isValid
 
 # check if list of dates includes any duplicate values
 def hasNoDuplicates(dateArray):
@@ -101,7 +111,7 @@ def isMonthValid(month):
     if monthInt <= 12 and monthInt >= 1:
         return True
     else:
-        print('Month is not in range [01, 12]')
+        print('Month ({}) is not in range [01, 12]'.format(monthInt))
         return False
 
 def isDayValid(day):
@@ -118,7 +128,7 @@ def isDayValid(day):
     if dayInt <= 31 and dayInt >= 1:
         return True
     else:
-        print('Day is not in range [01, 12]')
+        print('Day ({}) is not in range [01, 12]'.format(dayInt))
         return False
 
 
@@ -231,4 +241,3 @@ def isTimeZoneValid(timeZone):
     return True
 
 
-print(isValidDateString("9999-02-31T12:34:56+12:34"))

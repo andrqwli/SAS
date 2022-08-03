@@ -51,17 +51,28 @@ def generateValidTimeZone():
     time = generateValidHours() + ':' + generateValidMinutesSeconds()
     return sign + time
 
-# generate a list of length n of valid date strings
+# generate a list of length n of distinct valid date strings
 def generateValidDateStringList(n):
-    out = []
-    for i in range(n):
-        out.append(generateValidDateString())
-    return out
+    dateSet = set()
+    while len(dateSet) < n:
+        dateSet.add(generateValidDateString())
+    return list(dateSet)
+
+# generate a list of valid dates with duplicates
+def generateValidListWithDuplicates(numDistinctDates, numDuplicates):
+    dateSet = set()
+    while len(dateSet) < numDistinctDates:
+        dateSet.add(generateValidDateString())
+    
+    dateList = list(dateSet)
+    while len(dateList) < numDistinctDates + numDuplicates:
+        index = random.randint(1,numDistinctDates) - 1
+        dateList.append(dateList[index])
+    return dateList
+
 
 validList10 = generateValidDateStringList(10)
 validList100 = generateValidDateStringList(100)
 validList1000 = generateValidDateStringList(1000)
 validList5000 = generateValidDateStringList(5000)
 
-
-isValidDateString(4)
