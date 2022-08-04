@@ -232,6 +232,7 @@ def isTimeZoneValid(timeZone):
     time = timeZone[1:]
     if time.count(':') != 1:
         print('Time zone has {} \':\' delimiters, should have 1'.format(time.count(':')))
+        return False
     
     [hours, minutes] = time.split(':')
 
